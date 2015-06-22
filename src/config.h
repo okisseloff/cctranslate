@@ -7,7 +7,8 @@
 
 #include "utils.h"
 
-#define CCT_DEFAULT_OUTPUT_FILENAME "out.srt"
+#define CCT_DEFAULT_OUTPUT_FILENAME "translated.srt"
+#define CCT_DEFAULT_CCEXTRACTOR_URL "tcp://localhost:3269"
 
 typedef enum cct_source_type {
     CCT_SOURCE_SUBRIP,
@@ -28,6 +29,7 @@ typedef struct cct_config {
     char *google_api_key;
     char *langs;
     char *source_lang;
+    char *ccextractor_url;
 
     cct_source_type source_type;
     cct_sink_type sink_type;
@@ -41,5 +43,6 @@ void cct_config_init(cct_config *);
 void cct_config_cleanup(cct_config *);
 
 cct_status cct_parse_cl_args(cct_config *, int, char * const[]);
+void usage();
 
 #endif //CCTRANSLATE_CONFIG_H

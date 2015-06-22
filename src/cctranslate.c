@@ -9,6 +9,7 @@
 
 #include "source/cct_source.h"
 #include "source/cct_source_subrip.h"
+#include "source/cct_source_extractor.h"
 
 #include "sink/cct_sink.h"
 #include "sink/cct_sink_subrip.h"
@@ -83,6 +84,7 @@ int main(int argc, char *const argv[])
 
     switch(config.source_type) {
         case CCT_SOURCE_SUBRIP:
+        {
             if (cct_init_source_subrip(&source_ctx) != CCT_OK) {
                 fprintf(stderr, "main: can't init subrip source\n");
                 return EXIT_FAILURE;
@@ -93,9 +95,30 @@ int main(int argc, char *const argv[])
                 fprintf(stderr, "main: failed to open subrip source_ctx\n");
                 return EXIT_FAILURE;
             }
+            free(params.filename);
+        }
             break;
         case CCT_SOURCE_CCEXTRACTOR:
-            fprintf(stderr, "main: ccextractor source is not implemented yet\n");
+        {
+            if (cct_init_source_extractor(&source_ctx) != CCT_OK) {
+                fprintf(stderr, "main: can't init ccextractor source\n");
+                return EXIT_FAILURE;
+            }
+            if (!config.ccextractor_url) {
+                fprintf(stdout, "main: ccextractor url was not set, using default \"%s\"\n",
+                        CCT_DEFAULT_CCEXTRACTOR_URL);
+                config.ccextractor_url = strdup(CCT_DEFAULT_CCEXTRACTOR_URL);
+            }
+            cct_source_extractor_params params;
+            params.url = strdup(config.ccextractor_url);
+            if (source_ctx.open(&source_ctx, &params) != CCT_OK) {
+                fprintf(stderr, "main: failed to open ccextractor source_ctx\n");
+                return EXIT_FAILURE;
+            } else {
+                fprintf(stderr, "main: connected to ccextractor\n");
+            }
+            free(params.url);
+        }
             break;
     }
 
@@ -147,6 +170,8 @@ int main(int argc, char *const argv[])
             printf("end of stream reached\n");
             break;
         }
+        printf("entry recieved:\n");
+        cct_sub_entry_print(entry);
         cct_sub_entry *entries;
         unsigned int entries_count;
         if (entry_buffer_ctx.push(&entry_buffer_ctx, entry, &entries, &entries_count) != CCT_OK) {

@@ -7,22 +7,6 @@
 #include <stdlib.h>
 #include "utils.h"
 
-void usage()
-{
-    printf("cctranslate is a part of ccextractor project http://ccextractor.org/\n");
-    printf("version %d.%d.%d\n", CCTRANSLATE_VERSION_MAJOR,
-           CCTRANSLATE_VERSION_MINOR, CCTRANSLATE_VERSION_MAINT);
-    printf("usage: cctranslate args\n");
-    printf("args syntax: --name=value, -n=value, --novaluearg\n");
-    printf("\t-i, --input\t\tSource subrip filename]\n");
-    printf("\t-o, --output\t\tOutput filename\n");
-    printf("\t-k, --key\t\tGoogle Translate API key\n");
-    printf("\t-l, --langs\t\tSet target languages (comma-separated, e.g. -l=fr,it)\n");
-    printf("\t--list-langs\t\tList available languages\n");
-    printf("\t\n");
-    printf("\t-h, --help\t\tShow this help\n");
-}
-
 int has_extension(char *filename, char *ext)
 {
     if (!filename) {

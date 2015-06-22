@@ -31,7 +31,6 @@ char *curl_response_content(curl_response *);
 size_t on_curl_data_recieved(char *ptr, size_t size, size_t nmemb, curl_response *response);
 char *cjson_remove_quotes(char *);
 
-void usage();
 int has_extension(char *filename, char *ext);
 char *compose_filename(char *filename, char *lang);
 
