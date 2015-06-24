@@ -119,3 +119,24 @@ char *cjson_remove_quotes(char *string)
 
     return result;
 }
+
+char *json_unescape(char *in)
+{
+    if (!strstr(in, "\\\"")) {
+        return strdup(in);
+    }
+    size_t len = strlen(in);
+    char *out = malloc(len + 1);
+    memset(out, 0, len + 1);
+    int i = 0, j = 0;
+    while (i < len - 1) {
+        if (in[i] == '\\' && in[i + 1] == '\"') {
+            i += 2;
+            out[j++] = '\"';
+        } else {
+            out[j++] = in[i++];
+        }
+    }
+
+    return out;
+}
