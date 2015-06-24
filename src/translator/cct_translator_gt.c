@@ -244,7 +244,10 @@ char *__cct_translator_gt_get_translated_text(char *json_text)
 
     cJSON_Delete(response);
 
-    return text;
+    char *unescaped_text = json_unescape(text);
+    free(text);
+
+    return unescaped_text;
 }
 
 char *__cct_translator_gt_get_available_langs(cct_translator_ctx *ctx)
