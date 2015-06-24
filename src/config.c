@@ -84,6 +84,8 @@ cct_status cct_parse_cl_args(cct_config *config, int argc, char * const argv[])
                 config->langs = strdup(cl_value);
             } else if (!strcmp(cl_option, "-h") || !strcmp(cl_option, "--help")) {
                 config->show_help = 1;
+            } else if (!strcmp(cl_option, "-u") || !strcmp(cl_option, "--usage")) {
+                config->show_help = 1;
             } else if (!strcmp(cl_option, "--list-langs")) {
                 config->list_langs = 1;
             } else if (!strcmp(cl_option, "-s") || !strcmp(cl_option, "--source")) {
@@ -116,13 +118,14 @@ void usage()
            CCTRANSLATE_VERSION_MINOR, CCTRANSLATE_VERSION_MAINT);
     printf("usage: cctranslate args\n");
     printf("args syntax: --name=value, -n=value, --novaluearg\n");
-    printf("\t-i, --input\t\tSubrip source filename]\n");
-    printf("\t-o, --output\t\tOutput filename\n");
-    printf("\t-k, --key\t\tGoogle Translate API key\n");
-    printf("\t-l, --langs\t\tTarget languages (comma-separated, e.g. -l=fr,it)\n");
-    printf("\t-s, --source\t\tSource type. Possible values: extractor, subrip\n");
-    printf("\t-u, --extractor-url\t\tUrl of ccextractor sharing service (e.g. tcp://localhost:3269\n");
-    printf("\t--list-langs\t\tList available languages\n");
-    printf("\t\n");
-    printf("\t-h, --help\t\tShow this help\n");
+    printf("            -i, --input: Subrip Input filename\n");
+    printf("           -o, --output: Output filename\n");
+    printf("              -k, --key: Google Translate API key\n");
+    printf("            -l, --langs: Target languages (comma-separated, e.g. -l=fr,it)\n");
+    printf("           -s, --source: Source type. Possible values: extractor, subrip\n");
+    printf("    -u, --extractor-url: Url of ccextractor sharing service (e.g. tcp://localhost:3269\n");
+    printf("           --list-langs: List available languages\n");
+    printf("\n");
+    printf("             -h, --help: Show this help\n");
+    printf("            -u, --usage: Show this help\n");
 }
