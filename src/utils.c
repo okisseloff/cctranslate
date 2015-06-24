@@ -10,11 +10,11 @@
 int has_extension(char *filename, char *ext)
 {
     if (!filename) {
-        fprintf(stderr, "ends_with_srt: filename is NULL");
+        fprintf(stderr, "has_extension: filename is NULL");
         return 0;
     }
     if (!ext) {
-        fprintf(stderr, "ends_with_srt: ext is NULL");
+        fprintf(stderr, "has_extension: ext is NULL");
         return 0;
     }
 
@@ -30,13 +30,14 @@ int has_extension(char *filename, char *ext)
     return 0;
 }
 
-char *compose_filename(char *filename, char *lang)
+char *compose_filename(char *filename, char *lang, char *ext)
 {
     size_t filename_len = strlen(filename);
     size_t lang_len = strlen(lang);
+    size_t ext_len = strlen(ext);
     size_t out_len = (lang_len + filename_len
                       + 1 //'.' before lang name
-                      + 4 //".srt"
+                      + ext_len + 1 //".ext"
                       + 1 //'\0'
                      ) * sizeof(char);
 
@@ -51,12 +52,14 @@ char *compose_filename(char *filename, char *lang)
         strncpy(out, filename, filename_len - strlen(".srt"));
         strcat(out, ".");
         strcat(out, lang);
-        strcat(out, ".srt");
+        strcat(out, ".");
+        strcat(out, ext);
     } else {
         strcpy(out, filename);
         strcat(out, ".");
         strcat(out, lang);
-        strcat(out, ".srt");
+        strcat(out, ".");
+        strcat(out, ext);
     }
 
     return out;
