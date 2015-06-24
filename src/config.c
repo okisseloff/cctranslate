@@ -38,6 +38,10 @@ void cct_config_cleanup(cct_config *config)
 
 int is_option_value_valid(char *option)
 {
+    if (!option) {
+        fprintf(stderr, "is_option_value_valid: option value can't be empty\n");
+        return 0;
+    }
     if (strchr(option, '%')) {
         fprintf(stderr, "is_option_value_valid: option value can't contain percent %% symbol\n");
         return 0;
