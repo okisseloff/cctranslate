@@ -49,6 +49,12 @@ int is_option_value_valid(char *option)
     return 1;
 }
 
+#define check_value(x) \
+if (!is_option_value_valid(cl_value)) {\
+    fprintf(stderr, CLO_ILLEGAL_VALUE, x, cl_value);\
+    return CCT_FATAL;\
+}\
+
 cct_status cct_parse_cl_args(cct_config *config, int argc, char * const argv[])
 {
     char *cl_option = NULL,
@@ -62,31 +68,19 @@ cct_status cct_parse_cl_args(cct_config *config, int argc, char * const argv[])
         } else {
             if (!strcmp(cl_option, "-i") || !strcmp(cl_option, "--input")) {
                 cl_value = strtok(NULL, "=");
-                if (!is_option_value_valid(cl_value)) {
-                    fprintf(stderr, CLO_ILLEGAL_VALUE, "--input", cl_value);
-                    return CCT_FATAL;
-                }
+                check_value("--input");
                 config->input_filename = strdup(cl_value);
             } else if (!strcmp(cl_option, "-o") || !strcmp(cl_option, "--output")) {
                 cl_value = strtok(NULL, "=");
-                if (!is_option_value_valid(cl_value)) {
-                    fprintf(stderr, CLO_ILLEGAL_VALUE, "--output", cl_value);
-                    return CCT_FATAL;
-                }
+                check_value("--output");
                 config->output_filename = strdup(cl_value);
             } else if (!strcmp(cl_option, "-k") || !strcmp(cl_option, "--key")) {
                 cl_value = strtok(NULL, "=");
-                if (!is_option_value_valid(cl_value)) {
-                    fprintf(stderr, CLO_ILLEGAL_VALUE, "--key", cl_value);
-                    return CCT_FATAL;
-                }
+                check_value("--key");
                 config->google_api_key = strdup(cl_value);
             } else if (!strcmp(cl_option, "-l") || !strcmp(cl_option, "--langs")) {
                 cl_value = strtok(NULL, "=");
-                if (!is_option_value_valid(cl_value)) {
-                    fprintf(stderr, CLO_ILLEGAL_VALUE, "--langs", cl_value);
-                    return CCT_FATAL;
-                }
+                check_value("--langs");
                 config->langs = strdup(cl_value);
             } else if (!strcmp(cl_option, "-h") || !strcmp(cl_option, "--help")) {
                 config->show_help = 1;
@@ -94,22 +88,17 @@ cct_status cct_parse_cl_args(cct_config *config, int argc, char * const argv[])
                 config->list_langs = 1;
             } else if (!strcmp(cl_option, "-s") || !strcmp(cl_option, "--source")) {
                 cl_value = strtok(NULL, "=");
-                if (!is_option_value_valid(cl_value)) {
-                    fprintf(stderr, CLO_ILLEGAL_VALUE, "--source", cl_value);
-                    return CCT_FATAL;
-                }
+                check_value("--source");
                 if (!strcmp(cl_value, "extractor")) {
                     config->source_type = CCT_SOURCE_CCEXTRACTOR;
                 } else if (!strcmp(cl_value, "subrip")) {
                     config->source_type = CCT_SOURCE_SUBRIP;
                 } else {
                     fprintf(stderr, CLO_ILLEGAL_VALUE, "--source", cl_value);
-                }
-            } else if (!strcmp(cl_option, "-u") || !strcmp(cl_option, "--extractor-url")) {
-                if (!is_option_value_valid(cl_value)) {
-                    fprintf(stderr, CLO_ILLEGAL_VALUE, "--extractor-url", cl_value);
                     return CCT_FATAL;
                 }
+            } else if (!strcmp(cl_option, "-u") || !strcmp(cl_option, "--extractor-url")) {
+                check_value("--extractor-url");
                 config->ccextractor_url = strdup(cl_value);
             } else {
                 fprintf(stderr, CLO_UNRECOGNIZED, cl_option);
