@@ -32,6 +32,6 @@ size_t on_curl_data_recieved(char *ptr, size_t size, size_t nmemb, curl_response
 char *cjson_remove_quotes(char *);
 
 int has_extension(char *filename, char *ext);
-char *compose_filename(char *filename, char *lang);
+char *compose_filename(char *filename, char *lang, char *ext);
 
 #endif //CCTRANSLATE_UTILS_H

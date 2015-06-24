@@ -13,6 +13,7 @@
 
 #include "sink/cct_sink.h"
 #include "sink/cct_sink_subrip.h"
+#include "sink/cct_sink_transcript.h"
 
 #include "translator/cct_translator.h"
 #include "translator/cct_translator_gt.h"
@@ -145,9 +146,23 @@ int main(int argc, char *const argv[])
             }
             cct_sink_subrip_params params;
             char *output_filename = config.output_filename ? config.output_filename : CCT_DEFAULT_OUTPUT_FILENAME;
-            params.filename = compose_filename(output_filename, target_langs[i].code);
+            params.filename = compose_filename(output_filename, target_langs[i].code, "srt");
             if (sink_ctx[i].open(&sink_ctx[i], &params) != CCT_OK) {
                 fprintf(stderr, "main: can't open subrip sink");
+                return EXIT_FAILURE;
+            }
+            free(params.filename);
+        } else if (config.sink_type == CCT_SINK_TRANSCRIPT || config.sink_type == CCT_SINK_TIMED_TRANSCRIPT) {
+            if (cct_init_sink_transcript(&sink_ctx[i]) != CCT_OK) {
+                fprintf(stderr, "main: cant init transcript sink\n");
+                return EXIT_FAILURE;
+            }
+            cct_sink_transcript_params params;
+            char *output_filename = config.output_filename ? config.output_filename : CCT_DEFAULT_OUTPUT_FILENAME;
+            params.filename = compose_filename(output_filename, target_langs[i].code, "txt");
+            params.is_timed = config.sink_type == CCT_SINK_TIMED_TRANSCRIPT;
+            if (sink_ctx[i].open(&sink_ctx[i], &params) != CCT_OK) {
+                fprintf(stderr, "main: can't open transcript sink");
                 return EXIT_FAILURE;
             }
             free(params.filename);

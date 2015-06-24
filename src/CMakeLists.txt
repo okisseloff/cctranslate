@@ -14,5 +14,6 @@ add_executable(cctranslate ${SOURCE_FILES}
     translator/cct_translator.h translator/cct_translator_gt.h translator/cct_translator_gt.c
     3rd_party/cJSON.h 3rd_party/cJSON.c
     source/cct_source_extractor.h source/cct_source_extractor.c
-    source/ccx_sub_entry.pb_c.h source/ccx_sub_entry.pb_c.c)
+    source/ccx_sub_entry.pb_c.h source/ccx_sub_entry.pb_c.c
+    sink/cct_sink_transcript.h sink/cct_sink_transcript.c)
 target_link_libraries(cctranslate m curl zmq protobuf-c)

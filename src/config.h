@@ -7,7 +7,7 @@
 
 #include "utils.h"
 
-#define CCT_DEFAULT_OUTPUT_FILENAME "translated.srt"
+#define CCT_DEFAULT_OUTPUT_FILENAME "translated"
 #define CCT_DEFAULT_CCEXTRACTOR_URL "tcp://localhost:3269"
 
 typedef enum cct_source_type {
@@ -16,7 +16,9 @@ typedef enum cct_source_type {
 } cct_source_type;
 
 typedef enum cct_sink_type {
-    CCT_SINK_SUBRIP
+    CCT_SINK_SUBRIP,
+    CCT_SINK_TRANSCRIPT,
+    CCT_SINK_TIMED_TRANSCRIPT
 } cct_sink_type;
 
 typedef enum cct_translator_type {
