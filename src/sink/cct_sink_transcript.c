@@ -3,7 +3,6 @@
 //
 
 #include <stdlib.h>
-#include <errno.h>
 #include <string.h>
 
 #include "cct_sink.h"
@@ -71,6 +70,7 @@ cct_status _cct_sink_transcript_write(cct_sink_ctx *ctx, cct_sub_entry *entry)
         }
         fprintf(tctx->file, "%s\r\n", entry->lines[i]);
     }
+    fflush(tctx->file);
 
     return CCT_OK;
 }
