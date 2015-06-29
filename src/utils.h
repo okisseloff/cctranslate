@@ -33,5 +33,5 @@ char *cjson_remove_quotes(char *);
 
 int has_extension(char *filename, char *ext);
 char *compose_filename(char *filename, char *lang, char *ext);
-
+char *json_unescape(char *in);
 #endif //CCTRANSLATE_UTILS_H
