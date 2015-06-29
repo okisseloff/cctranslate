@@ -16,4 +16,4 @@ add_executable(cctranslate ${SOURCE_FILES}
     source/cct_source_extractor.h source/cct_source_extractor.c
     source/ccx_sub_entry.pb_c.h source/ccx_sub_entry.pb_c.c
     sink/cct_sink_transcript.h sink/cct_sink_transcript.c)
-target_link_libraries(cctranslate m curl zmq protobuf-c)
+target_link_libraries(cctranslate m curl nanomsg protobuf-c)

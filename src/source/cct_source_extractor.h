@@ -6,15 +6,14 @@
 #define CCTRANSLATE_CCT_SOURCE_EXTRACTOR_H
 
 #include "cct_source.h"
-#include "zmq.h"
 
 typedef struct cct_source_extractor_ctx { //TODO decide if params could be a part of this
-    unsigned long counter;
-    char *stream_name;
-    char *url;
-    void *sock;
-    void *zmq;
-    void *buf;
+	unsigned long counter;
+	char *stream_name;
+	char *url;
+	int sock;
+	int ep; //endpoint
+	void *buf;
 } cct_source_extractor_ctx;
 
 typedef struct cct_source_extractor_params {
