@@ -70,6 +70,7 @@ cct_status _cct_source_extractor_read(cct_source_ctx *ctx, cct_sub_entry **entry
 {
 	printf("[read]\n");
 	*entry = NULL;
+	*eos = 0;
 	cct_source_extractor_ctx *ectx = (cct_source_extractor_ctx *) ctx->ctx_data;
 	
 	ectx->buf = NULL;
