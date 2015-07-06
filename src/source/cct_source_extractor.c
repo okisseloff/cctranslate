@@ -6,14 +6,14 @@
 #include <stdio.h>
 #include <string.h>
 #include "cct_source_extractor.h"
-#include "ccx_sub_entry.pb_c.h"
+#include "ccx_sub_entry_message.pb-c.h"
 
 #include <nanomsg/nn.h>
 #include <nanomsg/pubsub.h>
 
 
 #define CCT_SE_BUF_SIZE 1024
-cct_sub_entry *__cct_source_extractor_pb_to_se(PbSubEntry *);
+cct_sub_entry *__cct_source_extractor_pb_to_se(CcxSubEntryMessage *);
 
 cct_status cct_init_source_extractor(cct_source_ctx *ctx)
 {
@@ -85,7 +85,7 @@ cct_status _cct_source_extractor_read(cct_source_ctx *ctx, cct_sub_entry **entry
 		return CCT_FATAL;
 	}
 	printf("[read] ok\n");
-	PbSubEntry *msg = pb_sub_entry__unpack(NULL, size, ectx->buf);
+	CcxSubEntryMessage *msg = ccx_sub_entry_message__unpack(NULL, size, ectx->buf);
 	if (!msg) {
 		fprintf(stderr, "_cct_source_extractor_read: can't unpack buffer\n");
 		return CCT_FATAL;
@@ -106,7 +106,7 @@ cct_status _cct_source_extractor_read(cct_source_ctx *ctx, cct_sub_entry **entry
 	}
 
 	printf("[read] free\n");
-	pb_sub_entry__free_unpacked(msg, NULL);
+    ccx_sub_entry_message__free_unpacked(msg, NULL);
 	printf("[read] done\n");
 	nn_freemsg(ectx->buf);
 
@@ -127,7 +127,7 @@ cct_status _cct_source_extractor_close(cct_source_ctx *ctx)
 	return CCT_OK;
 }
 
-cct_sub_entry *__cct_source_extractor_pb_to_se(PbSubEntry *msg)
+cct_sub_entry *__cct_source_extractor_pb_to_se(CcxSubEntryMessage *msg)
 {
 	cct_sub_entry *entry = malloc(sizeof(cct_sub_entry));
 	if (!entry) {
@@ -135,11 +135,10 @@ cct_sub_entry *__cct_source_extractor_pb_to_se(PbSubEntry *msg)
 		return NULL;
 	}
 
-	//TODO decide types for sub_entry
-	entry->counter = msg->counter;
-	entry->start_time = msg->start_time;
-	entry->end_time = msg->end_time;
-	entry->lines_count = msg->lines_count;
+	entry->counter = (unsigned long) msg->counter;
+	entry->start_time = (unsigned long) msg->start_time;
+	entry->end_time = (unsigned long) msg->end_time;
+	entry->lines_count = (int) msg->n_lines;
 	entry->lines = (char **) malloc(entry->lines_count * sizeof(char*));
 
 	for (unsigned int i = 0; i < entry->lines_count; i++) {

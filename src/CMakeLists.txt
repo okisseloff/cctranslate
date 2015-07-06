@@ -15,6 +15,6 @@ add_executable(cctranslate ${SOURCE_FILES}
     3rd_party/cJSON.h 3rd_party/cJSON.c
     3rd_party/protobuf-c.h 3rd_party/protobuf-c.c
     source/cct_source_extractor.h source/cct_source_extractor.c
-    source/ccx_sub_entry.pb_c.h source/ccx_sub_entry.pb_c.c
+    source/ccx_sub_entry_message.pb-c.h source/ccx_sub_entry_message.pb-c.c
     sink/cct_sink_transcript.h sink/cct_sink_transcript.c)
 target_link_libraries(cctranslate m curl nanomsg)
