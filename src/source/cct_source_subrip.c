@@ -147,9 +147,16 @@ cct_status _cct_source_subrip_read(cct_source_ctx *ctx, cct_sub_entry **entry, u
     new_entry->end_time = end_time;
     new_entry->lines_count = lines_count;
     new_entry->lines = (char **) malloc(new_entry->lines_count * sizeof(char*));
-
+    if (!new_entry->lines) {
+        perror("_cct_subrip_source_read: malloc() new_entry->lines failed");
+        return CCT_FATAL;
+    }
     for (unsigned int i = 0; i < lines_count; i++) {
         new_entry->lines[i] = strdup(lines_buffer[i]);
+        if (!new_entry->lines[i]) {
+            perror("_cct_subrip_source_read: strdup() new_entry->lines[i] failed");
+            return CCT_FATAL;
+        }
     }
 
     (*entry) = new_entry;
