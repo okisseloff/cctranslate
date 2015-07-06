@@ -85,41 +85,41 @@ int main(int argc, char *const argv[])
 
     switch(config.source_type) {
         case CCT_SOURCE_SUBRIP:
-        {
-            if (cct_init_source_subrip(&source_ctx) != CCT_OK) {
-                fprintf(stderr, "main: can't init subrip source\n");
-                return EXIT_FAILURE;
+            {
+                if (cct_init_source_subrip(&source_ctx) != CCT_OK) {
+                    fprintf(stderr, "main: can't init subrip source\n");
+                    return EXIT_FAILURE;
+                }
+                cct_source_subrip_params params;
+                params.filename = strdup(config.input_filename);
+                if (source_ctx.open(&source_ctx, &params) != CCT_OK) {
+                    fprintf(stderr, "main: failed to open subrip source_ctx\n");
+                    return EXIT_FAILURE;
+                }
+                free(params.filename);
             }
-            cct_source_subrip_params params;
-            params.filename = strdup(config.input_filename);
-            if (source_ctx.open(&source_ctx, &params) != CCT_OK) {
-                fprintf(stderr, "main: failed to open subrip source_ctx\n");
-                return EXIT_FAILURE;
-            }
-            free(params.filename);
-        }
             break;
         case CCT_SOURCE_CCEXTRACTOR:
-        {
-            if (cct_init_source_extractor(&source_ctx) != CCT_OK) {
-                fprintf(stderr, "main: can't init ccextractor source\n");
-                return EXIT_FAILURE;
+            {
+                if (cct_init_source_extractor(&source_ctx) != CCT_OK) {
+                    fprintf(stderr, "main: can't init ccextractor source\n");
+                    return EXIT_FAILURE;
+                }
+                if (!config.ccextractor_url) {
+                    fprintf(stdout, "main: ccextractor url was not set, using default \"%s\"\n",
+                            CCT_DEFAULT_CCEXTRACTOR_URL);
+                    config.ccextractor_url = strdup(CCT_DEFAULT_CCEXTRACTOR_URL);
+                }
+                cct_source_extractor_params params;
+                params.url = strdup(config.ccextractor_url);
+                if (source_ctx.open(&source_ctx, &params) != CCT_OK) {
+                    fprintf(stderr, "main: failed to open ccextractor source_ctx\n");
+                    return EXIT_FAILURE;
+                } else {
+                    fprintf(stderr, "main: connected to ccextractor\n");
+                }
+                free(params.url);
             }
-            if (!config.ccextractor_url) {
-                fprintf(stdout, "main: ccextractor url was not set, using default \"%s\"\n",
-                        CCT_DEFAULT_CCEXTRACTOR_URL);
-                config.ccextractor_url = strdup(CCT_DEFAULT_CCEXTRACTOR_URL);
-            }
-            cct_source_extractor_params params;
-            params.url = strdup(config.ccextractor_url);
-            if (source_ctx.open(&source_ctx, &params) != CCT_OK) {
-                fprintf(stderr, "main: failed to open ccextractor source_ctx\n");
-                return EXIT_FAILURE;
-            } else {
-                fprintf(stderr, "main: connected to ccextractor\n");
-            }
-            free(params.url);
-        }
             break;
     }
 
@@ -197,8 +197,7 @@ int main(int argc, char *const argv[])
             if (sink_ctx[i].write(&sink_ctx[i], &entries[i]) != CCT_OK) {
                 fprintf(stderr, "main: can't write output for \"%s\"\n", target_langs[i]);
             }
-            //printf("entry %d:\n", i);
-            //cct_sub_entry_print(&entries[i]);
+            cct_sub_entry_cleanup(&entries[i]);
         }
         free(entries);
         free(entry);
