@@ -17,7 +17,7 @@ cct_status cct_init_translator_gt(cct_translator_ctx *ctx)
     ctx->translate = _cct_translator_gt_translate;
     ctx->is_available = _cct_translator_gt_is_api_available;
     ctx->list_available_langs = _cct_translator_gt_list_available_langs;
-    ctx->list_target_langs = _cct_translator_gt_list_traget_langs;
+    ctx->list_target_langs = _cct_translator_gt_list_target_langs;
     ctx->close = _cct_translator_gt_close;
 
     cct_translator_gt_ctx *gt_ctx = (cct_translator_gt_ctx *) malloc(sizeof(cct_translator_gt_ctx));
@@ -143,7 +143,7 @@ cct_status _cct_translator_gt_list_available_langs(cct_translator_ctx *ctx, cct_
     return CCT_OK;
 }
 
-cct_status _cct_translator_gt_list_traget_langs(cct_translator_ctx *ctx, cct_language **langs, unsigned int *count)
+cct_status _cct_translator_gt_list_target_langs(cct_translator_ctx *ctx, cct_language **langs, unsigned int *count)
 {
     cct_translator_gt_ctx *gt_ctx = (cct_translator_gt_ctx *) ctx->ctx_data;
     *count = gt_ctx->langs_count;
@@ -153,7 +153,7 @@ cct_status _cct_translator_gt_list_traget_langs(cct_translator_ctx *ctx, cct_lan
     }
     *langs = (cct_language *) malloc(gt_ctx->langs_count * sizeof(cct_language));
     if (!langs) {
-        perror("_cct_translator_gt_list_traget_langs: malloc() failed");
+        perror("_cct_translator_gt_list_target_langs: malloc() failed");
         return CCT_FATAL;
     }
     for (int i = 0; i < gt_ctx->langs_count; i++) {

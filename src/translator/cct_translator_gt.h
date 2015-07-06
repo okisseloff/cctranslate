@@ -34,7 +34,7 @@ cct_status _cct_translator_gt_translate(cct_translator_ctx *, char *, char *, ch
 cct_status _cct_translator_gt_is_api_available(cct_translator_ctx *, unsigned int *);
 cct_status _cct_translator_gt_close(cct_translator_ctx *);
 cct_status _cct_translator_gt_list_available_langs(cct_translator_ctx *, cct_language **, unsigned int *);
-cct_status _cct_translator_gt_list_traget_langs(cct_translator_ctx *, cct_language **, unsigned int *);
+cct_status _cct_translator_gt_list_target_langs(cct_translator_ctx *, cct_language **, unsigned int *);
 
 char *__cct_translator_gt_get_translated_text(char *);
 char *__cct_translator_gt_request (cct_translator_ctx *, char *, char *);
